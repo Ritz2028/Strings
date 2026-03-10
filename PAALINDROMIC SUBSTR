@@ -1,0 +1,56 @@
+So every palindrome has a center.
+
+Two possibilities:
+
+Odd length palindrome
+center = single character
+
+Even length palindrome
+center = between two characters
+
+The algorithm works because:
+every palindrome expands from a center
+
+
+   string longestPalindrome(string str) {
+        int start = 0, end = 0;
+
+        for (int center = 0; center < str.length(); center++) {
+       
+            int lenOdd = expandFromCenter(str, center, center);
+        
+            int lenEven = expandFromCenter(str, center, center + 1);
+  //abba so centre is b and again tight is b so left and right wil be one after the other
+
+            int maxLen = max(lenOdd, lenEven);
+            if (maxLen > end - start) {
+                start = center - (maxLen - 1) / 2; //Distance from center to each side:
+                                                   //start = center - leftExpansion
+                                                   //end   = center + rightExpansion
+                                                   //0 1 2 3 4 5 6
+                                                   // r a c e c a r
+                                                            ^
+                                                  //   center = 3
+                                                  //   length = 7
+                                                  // start = 3 - (7-1)/2=0
+                                                  //  end = 3 + 7/2=6
+  
+                end = center + maxLen / 2;
+            }
+        }
+
+        return str.substr(start, end - start + 1);
+    }
+
+private:
+    int expandFromCenter(const string& str, int left, int right) {
+        while (left >= 0 && right < str.length() && str[left] == str[right]) {
+            left--;
+            right++;//expand
+        }
+        return right - left - 1;
+    }
+};
+
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                
