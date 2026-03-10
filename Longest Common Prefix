@@ -1,0 +1,33 @@
+str = ["flower", "flow", "flight"]
+Output:
+ "fl"
+
+approach:
+**Imp point:The common prefix across all strings must exist between the smallest and largest string when sorted lexicographically.(After sorting Strings that are most different appear at opposite ends.
+So:first string = smallest ,last string = largest. If these two share prefix "fl", then every string in between must also share it.Because lexicographic sorting guarantees that.
+
+Sorting the array helps bring these boundary strings to the extremes.
+By comparing only the first and last strings, we can determine the full common prefix shared by the entire array.
+Character-wise comparison from the beginning allows us to identify where the prefix stops.
+The point at which the characters start differing marks the end of the shared prefix.
+The portion before this mismatch is the longest common prefix among all strings
+
+string longestCommonPrefix(vector<string>& strs) {
+
+    sort(strs.begin(), strs.end());
+
+    string first = strs[0];
+    string last = strs[strs.size()-1];
+
+    string ans = "";
+
+    for(int i=0;i<first.size();i++){
+
+        if(first[i] == last[i])
+            ans += first[i];
+        else
+            break;
+    }
+
+    return ans;
+}
