@@ -1,0 +1,65 @@
+
+
+: s = "ADOBECODEBANC", t = "ABC"
+Output: "BANC"
+Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
+
+intutition:
+freq > 0  → still needed
+freq = 0  → exactly satisfied
+freq < 0  → extra
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+
+        vector<int> freq(128,0);
+
+        for(char c : t)
+            freq[c]++;
+
+        int left = 0;
+        int count = t.size();
+
+        int minLen = INT_MAX;
+        int start = 0;
+
+        for(int right = 0; right < s.size(); right++) {
+
+            if(freq[s[right]] > 0)
+                count--;
+//matlab uss window mein aagya jitna t string mein tha so cnt-- matlab agar t string mein 3 char hai to 1 mil gya to cnt=2 now yani abhi bhi do characters aur dhundhne hai .ALSO agar cnt is negative matlab ye extra hai so agar window se hatate smay kisi ka - hai freq yani extra hai to tum hata sakte ho
+
+            freq[s[right]]--;
+
+            while(count == 0) {
+
+                if(right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    start = left;
+                }
+
+                freq[s[left]]++; //left se ham  window shrink karte hai to  yani wo character ham hata rahe hai to cnt++ bcz positive cnt shows that we need it and cnt++ yani t string wala charactret hamne hata diya but we need it to length badh gya yani abhi dhundho aage
+
+                if(freq[s[left]] > 0)
+                    count++;
+
+                left++;
+            }
+        }
+
+        if(minLen == INT_MAX)
+            return "";
+
+        return s.substr(start, minLen);//substr(start_indx,no of characters)
+    }
+};
+
+
+
+
+
+
+
+
+
