@@ -1,0 +1,65 @@
+Input:
+ s = "tree"
+Output:
+ ['e', 'r', 't']
+Explanation:
+
+e → 2
+r → 1
+t → 1
+Since 'r' and 't' have the same frequency, they are sorted alphabetically → 'r' comes before 't'.
+
+
+max heap but in tie min heap jaisa so comparator
+
+struct cmp{
+bool operator()(pair<int,char>a,pair<int,char>b)
+{
+if(a.first==b.first)
+return a.second>b.second;//return condition_for_element_you_want_to_push_down 
+
+//yhan larger elemnt ko neeche rakhna tha in  case of tie isiliye> agar ques mein bolta tie mein larger char chahiye to yani hame small char ko neeche puch karna taki larger upar ho to ham likhte a.second<b.second bass > ya < matlab rako//
+
+return a.first<b.first//outer loop for max heap
+}
+
+
+class Solution {
+public:
+
+    struct cmp {
+        bool operator()(pair<int,char> a, pair<int,char> b){
+            
+            if(a.first == b.first)
+                return a.second > b.second;
+
+            return a.first < b.first;
+        }
+    };
+
+    string frequencySort(string s) {
+
+        unordered_map<char,int> freq;
+
+        for(char c : s)
+            freq[c]++;
+
+        priority_queue<pair<int,char>, vector<pair<int,char>>, cmp> pq;
+
+        for(auto p : freq)
+            pq.push({p.second , p.first});
+
+        string ans="";
+
+        while(!pq.empty()){
+
+            int f = pq.top().first;
+            char c = pq.top().second;
+            pq.pop();
+
+            ans.append(f , c);
+        }
+
+        return ans;
+    }
+};
